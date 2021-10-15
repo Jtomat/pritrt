@@ -1,6 +1,9 @@
 import { Commit, createStore } from "vuex";
 
+import { useStore } from "vuex";
+
 export interface UserModel {
+  id: number;
   name: string;
   email: string;
   token: string;

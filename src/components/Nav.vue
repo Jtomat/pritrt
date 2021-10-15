@@ -50,10 +50,17 @@
             >
           </li>
           <li v-if="data.auth && data.auth.value">
-            <a href="#" class="nav-link px-2 text-white">Задачи</a>
+            <routerLink to="/tasks" href="#" class="nav-link px-2 text-white"
+              >Задачи</routerLink
+            >
           </li>
           <li v-if="data.auth && data.auth.value">
-            <a href="#" class="nav-link px-2 text-white">Ресурсы</a>
+            <routerLink
+              to="/resources"
+              href="#"
+              class="nav-link px-2 text-white"
+              >Ресурсы</routerLink
+            >
           </li>
           <li v-if="data.auth && data.auth.value">
             <routerLink to="/results" href="#" class="nav-link px-2 text-white"

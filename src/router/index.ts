@@ -4,12 +4,24 @@ import RegisterPage from "@/views/register-page.vue";
 import HomePage from "@/views/home-page.vue";
 import ResultsPage from "@/views/results-page.vue";
 import ProjectsPage from "@/views/projects-page.vue";
+import TasksPage from "@/views/tasks-page.vue";
+import ResoursesPage from "@/views/resourses-page.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "Home",
     component: HomePage,
+  },
+  {
+    path: "/tasks",
+    name: "Tasks",
+    component: TasksPage,
+  },
+  {
+    path: "/resources",
+    name: "Tasks",
+    component: ResoursesPage,
   },
   {
     path: "/login",

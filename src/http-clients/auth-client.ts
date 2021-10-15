@@ -14,6 +14,7 @@ export class AuthClient {
     });
     await this.store.dispatch("setAuth", true);
     await this.store.dispatch("setUser", {
+      id: data.id,
       name: data.name,
       email: email,
       password: password,
@@ -29,6 +30,7 @@ export class AuthClient {
     });
     await this.store.dispatch("setAuth", true);
     await this.store.dispatch("setUser", {
+      id: data.id,
       name: data.name,
       email: email,
       password: password,
