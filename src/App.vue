@@ -1,11 +1,13 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
+  <Navigation />
   <router-view />
+  <Bottom />
 </template>
-
+<script>
+import Navigation from "@/components/Nav";
+import "@progress/kendo-theme-default/dist/all.css";
+export default { components: Navigation };
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
