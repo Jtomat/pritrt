@@ -20,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/resources",
-    name: "Tasks",
+    name: "Resources",
     component: ResoursesPage,
   },
   {

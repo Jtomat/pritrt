@@ -16,7 +16,7 @@ export class TaskClient {
   _api = "/tasks/";
 
   async getTasksForUser(id: number): Promise<any[]>{
-    const { data } = await $host.get<any[]>(this._api + `/user/${id}`);
+    const { data } = await $host.get<any[]>(this._api + `user/${id}`);
     return data;
   }
 
