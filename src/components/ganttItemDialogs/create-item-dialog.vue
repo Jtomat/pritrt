@@ -1,11 +1,13 @@
 <template>
   <k-dialog
-    :modal="false"
-    :width="580"
+    v-if="visibleDialog"
     :title="'Добавить элемент'"
     @close="closeDialog"
     @open="openDialog"
   >
+    <p :style="{ margin: '25px', textAlign: 'center' }">
+      ДОБАВИТЬ
+    </p>
     <dialog-actions-bar>
       <button class="k-button" @click="closeDialog">Отменить</button>
       <button class="k-button" @click="createItem">Добавить</button>
@@ -23,8 +25,10 @@ export default defineComponent({
     "k-dialog": Dialog,
     "dialog-actions-bar": DialogActionsBar,
   },
-  setup() {
-    return { visibleDialog: false };
+  data() {
+    return {
+      visibleDialog: false
+    }
   },
   mounted() {
     this.visibleDialog = this.visible;

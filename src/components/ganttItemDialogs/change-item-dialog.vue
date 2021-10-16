@@ -6,7 +6,7 @@
     @open="openDialog"
   >
     <p :style="{ margin: '25px', textAlign: 'center' }">
-      Are you sure you want to continue?
+      ИЗМЕНИТЬ
     </p>
     <dialog-actions-bar>
       <button class="k-button" @click="closeDialog">Отменить</button>
