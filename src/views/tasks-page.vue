@@ -1,11 +1,16 @@
-<template><tasks-component></tasks-component></template>
+<template>
+  <tasks-component></tasks-component>
+</template>
 <script>
 import TasksComponent from "@/components/tasks-component";
-export default {
-name: "tasks-view",
-  components: {TasksComponent}
-}
+import { defineComponent } from "vue";
+export default defineComponent({
+  name: "tasks-view",
+  components: { TasksComponent },
+  setup() {
+    return {};
+  },
+});
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

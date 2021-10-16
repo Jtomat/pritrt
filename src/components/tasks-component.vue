@@ -10,19 +10,54 @@
     :columns="data.tableHeaders"
   >
   </Grid>
+  <k-dialog
+    :width="800"
+    :height="600"
+    v-if="data.visibleDialog"
+    @close="toggleDialog"
+    :title-render="customTitleBar"
+  >
+    <template
+      v-slot:myTemplate="{
+        /* eslint-disable-next-line vue/no-unused-vars */
+        props,
+        /* eslint-disable-next-line vue/no-unused-vars */
+        listeners,
+      }"
+    >
+      <div
+        :style="{
+          fontSize: '18px',
+          lineHeight: '1.3em',
+        }"
+      >
+        <span class="k-icon k-i-edit" />{{ data.selectedRecord.name }}
+      </div>
+    </template>
+    <p :style="{ margin: '25px', textAlign: 'center' }">
+      TODO: надо сделать форму
+    </p>
+    <dialog-actions-bar>
+      <button class="k-button" @click="toggleDialog">No</button>
+      <button class="k-button" @click="toggleDialog">Yes</button>
+    </dialog-actions-bar>
+  </k-dialog>
 </template>
 
 <script>
-import { defineComponent, getCurrentInstance } from "vue";
+import { computed, defineComponent, getCurrentInstance } from "vue";
 import { TaskClient } from "@/http-clients/task-client";
 import { useStore } from "vuex";
 import store from "@/store/index.ts";
 import { Grid, GridColumn } from "@progress/kendo-vue-grid";
+import { Dialog, DialogActionsBar } from "@progress/kendo-vue-dialogs";
 
 export default defineComponent({
   name: "tasks-component",
   components: {
     Grid: Grid,
+    "k-dialog": Dialog,
+    "dialog-actions-bar": DialogActionsBar,
   },
   setup() {
     const taskClient = new TaskClient();
@@ -43,7 +78,10 @@ export default defineComponent({
         h(
           "button",
           {
-            onClick: ($event) => console.log(props.dataItem), // TODO: переписать на открытие
+            onClick: ($event) => {
+              data.selectedRecord = props.dataItem;
+              toggleDialog();
+            },
             on: {
               click: function (e) {
                 listeners.custom(e);
@@ -92,8 +130,20 @@ export default defineComponent({
       data.show = true;
       instance.proxy.$forceUpdate();
     });
+    data.visibleDialog = false;
 
-    return { data };
+    data.selectedRecord = null;
+    const toggleDialog = () => {
+      data.visibleDialog = !data.visibleDialog;
+      instance.proxy.$forceUpdate();
+    };
+
+    return { data, toggleDialog };
+  },
+  data: function () {
+    return {
+      customTitleBar: "myTemplate",
+    };
   },
 });
 </script>

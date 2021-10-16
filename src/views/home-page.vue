@@ -3,15 +3,14 @@
   <div class="inner">
     <div class="p-5 mb-4 bg-light rounded-3">
       <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold">Custom jumbotron</h1>
+        <h1 class="display-5 fw-bold">Проект UnSleepingEye</h1>
         <p class="col-md-8 fs-4" style="width: 100%">
-          Using a series of utilities, you can create this jumbotron, just like
-          the one in previous versions of Bootstrap. Check out the examples
-          below for how you can remix and restyle it to your liking.
+          Данные проект, в ходе своего развития претерпел множество изменений,
+          среди них: 2 перехода на другой FrameWork, смена языка для написания
+          серверного приложения, базы данных и перемещение на новый хостинг. Но
+          всё же он до сих пор жив.
         </p>
-        <button class="btn btn-primary btn-lg" type="button">
-          Example button
-        </button>
+        <button class="btn btn-primary btn-lg" type="button">Поддержать</button>
       </div>
     </div>
     <div class="row align-items-md-stretch">

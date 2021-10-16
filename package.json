@@ -24,6 +24,7 @@
     "@progress/kendo-vue-grid": "^2.5.2",
     "@progress/kendo-vue-inputs": "^2.5.0",
     "@progress/kendo-vue-intl": "^2.5.0",
+    "@progress/kendo-vue-labels": "^2.5.2",
     "@progress/kendo-vue-layout": "^2.5.2",
     "axios": "^0.22.0",
     "bootstrap": "^5.1.1",
