@@ -49,14 +49,25 @@ export default defineComponent({
       let index = 1;
       value.forEach((project) => {
         index++;
+        let minDate = new Date();
+        minDate.setFullYear(2100);
+        project.stages.forEach((stage) => {
+          if (stage.dateStart < minDate) minDate = stage.dateStart;
+        });
+        let maxDate = new Date();
+        maxDate.setFullYear(1900);
+        project.stages.forEach((stage) => {
+          if (stage.dateEnd > maxDate) maxDate = stage.dateEnd;
+        });
+        console.log(minDate.toLocaleDateString(), maxDate.toLocaleDateString());
         const newProjectItem = {
           id: index + 0,
           supID: "P" + project.id,
           title: project.name,
           orderId: order,
           expanded: true,
-          start: project.dateStart ? new Date(project.dateStart) : new Date(),
-          end: project.dateEnd ? new Date(project.dateEnd) : new Date(),
+          start: minDate ? minDate : new Date(),
+          end: maxDate ? maxDate : new Date(),
         };
         order++;
         result.push(newProjectItem);

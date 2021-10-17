@@ -6,14 +6,14 @@ export abstract class ProjectModel {
   name = "";
   info = "";
   stages: Array<StageModel> = [];
-  get dateStart() {
+  dateStart() {
     let minDate = new Date();
     this.stages.forEach((stage) => {
       if (stage.dateStart < minDate) minDate = stage.dateStart;
     });
     return minDate;
   }
-  get dateEnd() {
+  dateEnd() {
     let maxDate = new Date();
     this.stages.forEach((stage) => {
       if (stage.dateEnd < maxDate) maxDate = stage.dateEnd;
