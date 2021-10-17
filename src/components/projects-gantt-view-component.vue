@@ -1,10 +1,14 @@
 <template>
   <div class="toolbar">
-    <button class="btn btn-warning">Добавить элемент</button>
-    <button class="btn btn-secondary" :disabled="!selected">
+    <button class="btn btn-warning" @click="this.$refs.createDialog.openDialog()">Добавить элемент</button>
+    <button
+      class="btn btn-secondary"
+      :disabled="!data.selected"
+      @click="this.$refs.changeDialog.openDialog()"
+    >
       Изменить элемент
     </button>
-    <button class="btn btn-secondary" :disabled="!selected">
+    <button class="btn btn-secondary" @click="this.$refs.deleteDialog.openDialog()" :disabled="!data.selected">
       Удалить элемент
     </button>
   </div>
@@ -25,7 +29,9 @@
       <gantt-view :type="'month'" :selected="true"></gantt-view>
     </gantt>
   </div>
-  <create-item-dialog></create-item-dialog>
+  <create-item-dialog ref="createDialog" />
+  <change-item-dialog ref="changeDialog" />
+  <delete-item-dialog ref="deleteDialog" />
 </template>
 
 <script>
@@ -33,12 +39,16 @@ import { Gantt, GanttView } from "@progress/kendo-gantt-vue-wrapper";
 import { ProjectClient } from "@/http-clients/project-client";
 import { computed, defineComponent, getCurrentInstance } from "vue";
 import kendo from "@progress/kendo-ui";
-import CreateItemDialog from "@/components/create-item-dialog";
+import CreateItemDialog from "@/components/ganttItemDialogs/create-item-dialog";
+import ChangeItemDialog from "@/components/ganttItemDialogs/change-item-dialog";
+import DeleteItemDialog from "@/components/ganttItemDialogs/delete-item-dialog";
 
 export default defineComponent({
   name: "projects-gantt-view-component",
   components: {
+    ChangeItemDialog,
     CreateItemDialog,
+    DeleteItemDialog,
     gantt: Gantt,
     "gantt-view": GanttView,
   },

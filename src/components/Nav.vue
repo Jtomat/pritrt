@@ -40,17 +40,25 @@
           "
         >
           <li>
-            <routerLink to="/" class="nav-link px-2 text-secondary"
+            <routerLink
+              to="/"
+              class="nav-link px-2 text-secondary"
               >Главная</routerLink
             >
           </li>
           <li v-if="data.auth && data.auth.value">
-            <routerLink to="/projects" href="#" class="nav-link px-2 text-white"
+            <routerLink
+              to="/projects"
+              href="#"
+              class="nav-link px-2 text-secondary"
               >Проекты</routerLink
             >
           </li>
           <li v-if="data.auth && data.auth.value">
-            <routerLink to="/tasks" href="#" class="nav-link px-2 text-white"
+            <routerLink
+              to="/tasks"
+              href="#"
+              class="nav-link px-2 text-secondary"
               >Задачи</routerLink
             >
           </li>
@@ -58,12 +66,15 @@
             <routerLink
               to="/resources"
               href="#"
-              class="nav-link px-2 text-white"
+              class="nav-link px-2 text-secondary"
               >Ресурсы</routerLink
             >
           </li>
           <li v-if="data.auth && data.auth.value">
-            <routerLink to="/results" href="#" class="nav-link px-2 text-white"
+            <routerLink
+              to="/results"
+              href="#"
+              class="nav-link px-2 text-secondary"
               >Отчёт</routerLink
             >
           </li>
@@ -134,5 +145,16 @@ export default {
     };
     return { data, exit };
   },
+  computed: {
+    currentRoute() {
+      console.log(this.$router.currentRoute.path);
+      return this.$router.currentRoute.path;
+    },
+  },
 };
 </script>
+<style scoped>
+.router-link-active {
+  color: #ffc107 !important;
+}
+</style>
