@@ -1,6 +1,11 @@
 <template>
   <div class="toolbar">
-    <button class="btn btn-warning" @click="this.$refs.createDialog.openDialog()">Добавить элемент</button>
+    <button
+      class="btn btn-warning"
+      @click="this.$refs.createDialog.openDialog()"
+    >
+      Добавить элемент
+    </button>
     <button
       class="btn btn-secondary"
       :disabled="!data.selected"
@@ -8,7 +13,11 @@
     >
       Изменить элемент
     </button>
-    <button class="btn btn-secondary" @click="this.$refs.deleteDialog.openDialog()" :disabled="!data.selected">
+    <button
+      class="btn btn-secondary"
+      @click="this.$refs.deleteDialog.openDialog()"
+      :disabled="!data.selected"
+    >
       Удалить элемент
     </button>
   </div>
@@ -29,23 +38,26 @@
       <gantt-view :type="'month'" :selected="true"></gantt-view>
     </gantt>
   </div>
-  <create-item-dialog ref="createDialog" />
-  <change-item-dialog ref="changeDialog" />
-  <delete-item-dialog ref="deleteDialog" />
+  <create-item-dialog :width="800" :height="720" ref="createDialog" />
+  <change-item-dialog :width="800" :height="720" ref="changeDialog" />
+  <delete-item-dialog :width="800" :height="720" ref="deleteDialog" />
+  <await-component v-if="data.loading"></await-component>
 </template>
 
 <script>
 import { Gantt, GanttView } from "@progress/kendo-gantt-vue-wrapper";
 import { ProjectClient } from "@/http-clients/project-client";
 import { computed, defineComponent, getCurrentInstance } from "vue";
-import kendo from "@progress/kendo-ui";
 import CreateItemDialog from "@/components/ganttItemDialogs/create-item-dialog";
 import ChangeItemDialog from "@/components/ganttItemDialogs/change-item-dialog";
 import DeleteItemDialog from "@/components/ganttItemDialogs/delete-item-dialog";
+import AwaitComponent from "@/components/await-component";
 
+import "@progress/kendo-ui";
 export default defineComponent({
   name: "projects-gantt-view-component",
   components: {
+    AwaitComponent,
     ChangeItemDialog,
     CreateItemDialog,
     DeleteItemDialog,
@@ -59,25 +71,14 @@ export default defineComponent({
       let index = 1;
       value.forEach((project) => {
         index++;
-        let minDate = new Date();
-        minDate.setFullYear(2100);
-        project.stages.forEach((stage) => {
-          if (stage.dateStart < minDate) minDate = stage.dateStart;
-        });
-        let maxDate = new Date();
-        maxDate.setFullYear(1900);
-        project.stages.forEach((stage) => {
-          if (stage.dateEnd > maxDate) maxDate = stage.dateEnd;
-        });
-        console.log(minDate.toLocaleDateString(), maxDate.toLocaleDateString());
         const newProjectItem = {
           id: index + 0,
           supID: "P" + project.id,
           title: project.name,
           orderId: order,
           expanded: true,
-          start: minDate ? minDate : new Date(),
-          end: maxDate ? maxDate : new Date(),
+          start: project.dateStart ? new Date(project.dateStart) : new Date(),
+          end: project.dateEnd ? new Date(project.dateEnd) : new Date(),
         };
         order++;
         result.push(newProjectItem);
@@ -119,7 +120,7 @@ export default defineComponent({
       return result;
     };
 
-    const data = { gantt: null, deps: null, show: false };
+    const data = { gantt: null, deps: null, show: false, loading: true };
     data.deps = [
       {
         predecessorId: 1,
@@ -148,13 +149,25 @@ export default defineComponent({
     const projects = projectsClient.getAllProjects();
     const instance = getCurrentInstance();
     data.instance = instance;
-    data.selection = false;
-    projects.then((value) => {
-      data.gantt = transformToGantt(value);
-      data.show = true;
-      instance.proxy.$forceUpdate();
-    });
-    data.selection = false;
+
+    const forceUpd = () => {
+      data.selection = false;
+      data.gantt = null;
+      data.deps = null;
+      data.show = false;
+      data.loading = true;
+      data.selection = false;
+      projects.then((value) => {
+        instance.proxy.$forceUpdate();
+        setTimeout(() => {
+          data.gantt = transformToGantt(value);
+          data.show = true;
+          data.loading = false;
+          instance.proxy.$forceUpdate();
+        }, 1000);
+      });
+    };
+    forceUpd();
     const selected = computed(() => data.selection);
     return { data, show, selected };
   },
