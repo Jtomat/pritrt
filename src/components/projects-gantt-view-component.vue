@@ -38,9 +38,20 @@
       <gantt-view :type="'month'" :selected="true"></gantt-view>
     </gantt>
   </div>
-  <create-item-dialog :width="800" :height="720" ref="createDialog" />
-  <change-item-dialog :width="800" :height="720" ref="changeDialog" />
-  <delete-item-dialog :width="800" :height="720" ref="deleteDialog" />
+  <create-item-dialog
+    :onSave="forceUpd"
+    :width="800"
+    :height="780"
+    ref="createDialog"
+  />
+  <change-item-dialog :width="800" :height="780" ref="changeDialog" />
+  <delete-item-dialog
+    :item="data.selected"
+    :onSave="forceUpd"
+    :width="500"
+    :height="280"
+    ref="deleteDialog"
+  />
   <await-component v-if="data.loading"></await-component>
 </template>
 
@@ -77,8 +88,9 @@ export default defineComponent({
           title: project.name,
           orderId: order,
           expanded: true,
-          start: project.dateStart ? new Date(project.dateStart) : new Date(),
-          end: project.dateEnd ? new Date(project.dateEnd) : new Date(),
+          stages: project.stages,
+          start: project.dateStart,
+          end: project.dateEnd,
         };
         order++;
         result.push(newProjectItem);
@@ -90,8 +102,10 @@ export default defineComponent({
             title: stage.name,
             parentId: newProjectItem.id,
             supParentId: "P" + project.id,
+            percentComplete: stage.finished(),
             end: stage.dateEnd ? new Date(stage.dateEnd) : new Date(),
             start: stage.dateStart ? new Date(stage.dateStart) : new Date(),
+            tasks: stage.tasks,
             orderId: order,
             expanded: true,
           };
@@ -105,7 +119,7 @@ export default defineComponent({
               orderId: order,
               title: task.name,
               resources: [{ name: task.worker.user.name }],
-
+              percentComplete: task.finished ? task.finished : 0,
               start: task.dateStart ? new Date(task.dateStart) : new Date(),
               end: task.dateEnd ? new Date(task.dateEnd) : new Date(),
               parentId: newStageItem.id,
@@ -146,11 +160,11 @@ export default defineComponent({
     ];
     const show = computed(() => data.show);
     const projectsClient = new ProjectClient();
-    const projects = projectsClient.getAllProjects();
     const instance = getCurrentInstance();
     data.instance = instance;
 
     const forceUpd = () => {
+      const projects = projectsClient.getAllProjects();
       data.selection = false;
       data.gantt = null;
       data.deps = null;
@@ -169,7 +183,7 @@ export default defineComponent({
     };
     forceUpd();
     const selected = computed(() => data.selection);
-    return { data, show, selected };
+    return { data, show, selected, forceUpd };
   },
   computed: {
     hasSelected: {
@@ -181,10 +195,18 @@ export default defineComponent({
       },
     },
   },
+  data() {
+    return {
+      key: 0,
+    };
+  },
   methods: {
     selection(e) {
       const instance = e.sender;
-      this.data.selected = instance.dataItem(instance.select());
+      const preselect = instance.dataItem(instance.select());
+      this.data.selected = this.data.gantt.find(
+        (item) => item.id === preselect.id
+      );
       this.hasSelected = false;
       this.data.selection = true;
       this.data.instance.proxy.$forceUpdate();

@@ -6,20 +6,8 @@ export abstract class ProjectModel {
   name = "";
   info = "";
   stages: Array<StageModel> = [];
-  dateStart() {
-    let minDate = new Date();
-    this.stages.forEach((stage) => {
-      if (stage.dateStart < minDate) minDate = stage.dateStart;
-    });
-    return minDate;
-  }
-  dateEnd() {
-    let maxDate = new Date();
-    this.stages.forEach((stage) => {
-      if (stage.dateEnd < maxDate) maxDate = stage.dateEnd;
-    });
-    return maxDate;
-  }
+  dateStart;
+  dateEnd;
 }
 
 export interface GanttItemModel {
@@ -45,6 +33,39 @@ export class ProjectClient {
 
   async getAllProjects(): Promise<ProjectModel[]> {
     const { data } = await $host.get<ProjectModel[]>(this._api);
+    data.forEach((pr) => {
+      let minDate = new Date(8640000000000000);
+      pr.stages.forEach((stage) => {
+        if (new Date(stage.dateStart) < minDate)
+          minDate = new Date(stage.dateStart);
+      });
+      let maxDate = new Date(-8640000000000000);
+      pr.stages.forEach((stage) => {
+        if (new Date(stage.dateEnd) > maxDate)
+          maxDate = new Date(stage.dateEnd);
+      });
+      pr.dateEnd = maxDate;
+
+      pr.dateStart = minDate;
+      pr.stages.forEach((st) => {
+        st.finished = new StageModel(st).finished;
+      });
+    });
+    return data;
+  }
+
+  async remove(dataItem: ProjectModel): Promise<void> {
+    const { data } = await $host.delete<void>(
+      this._api + `remove/${dataItem.id}`
+    );
+    return data;
+  }
+
+  async create(dataItem: ProjectModel): Promise<ProjectModel> {
+    const { data } = await $host.post<ProjectModel>(
+      this._api + "add",
+      dataItem
+    );
     return data;
   }
 }
