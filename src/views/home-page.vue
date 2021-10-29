@@ -10,7 +10,13 @@
           серверного приложения, базы данных и перемещение на новый хостинг. Но
           всё же он до сих пор жив.
         </p>
-        <button class="btn btn-primary btn-lg" type="button">Поддержать</button>
+        <button
+          class="btn btn-primary btn-lg"
+          type="button"
+          onclick="alert('Спасибо!')"
+        >
+          Поддержать
+        </button>
       </div>
     </div>
     <div class="row align-items-md-stretch">
@@ -33,15 +39,14 @@
       </div>
       <div class="col-md-6">
         <div class="h-100 p-5 bg-light border rounded-3">
-          <h2>Add borders</h2>
-          <p>
-            Or, keep it light and add a border for some added definition to the
-            boundaries of your content. Be sure to look under the hood at the
-            source HTML here as we've adjusted the alignment and sizing of both
-            column's content for equal-height.
-          </p>
-          <button class="btn btn-outline-secondary" type="button">
-            Example button dwa
+          <h2>Предыдущая версия приложения</h2>
+          <p>Не рекомендую её открывать, тк многие маршруты были изменены.</p>
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            @click="openOld()"
+          >
+            Всё равно открыть
           </button>
         </div>
       </div>
@@ -55,6 +60,9 @@ export default {
   methods: {
     openGit() {
       window.open("https://github.com/Jtomat/pritrt", "_blank");
+    },
+    openOld() {
+      window.open("https://unsleepingeye.herokuapp.com/", "_blank");
     },
   },
 };
