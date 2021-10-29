@@ -16,14 +16,18 @@
     <div class="row align-items-md-stretch">
       <div class="col-md-6">
         <div class="h-100 p-5 text-white bg-dark rounded-3">
-          <h2>Change the background</h2>
+          <h2>О том как всё происходило</h2>
           <p>
-            Swap the background-color utility and add a `.text-*` color utility
-            to mix up the jumbotron look. Then, mix and match with additional
-            component themes and more.
+            В большенстве своём (а точнее все) коммиты не несут смысловой
+            нагрузки. Но если вам так хочется посмотреть на это, то допбро
+            пожаловать.
           </p>
-          <button class="btn btn-outline-light" type="button">
-            Example button
+          <button
+            class="btn btn-outline-light"
+            type="button"
+            @click="openGit()"
+          >
+            Перейти на GitHub
           </button>
         </div>
       </div>
@@ -48,6 +52,11 @@
 <script>
 export default {
   name: "home-page",
+  methods: {
+    openGit() {
+      window.open("https://github.com/Jtomat/pritrt", "_blank");
+    },
+  },
 };
 </script>
 
