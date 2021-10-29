@@ -41,7 +41,7 @@
             column's content for equal-height.
           </p>
           <button class="btn btn-outline-secondary" type="button">
-            Example button
+            Example button dwa
           </button>
         </div>
       </div>
