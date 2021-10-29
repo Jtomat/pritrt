@@ -38,6 +38,12 @@ export default { components: Navigation };
   color: #2c3e50;
 }
 
+.k-resources-wrap > .k-resource {
+  background: transparent !important;
+}
+.k-task-complete {
+  background-color: #cb8105 !important;
+}
 #nav a.router-link-exact-active {
   color: #42b983;
 }

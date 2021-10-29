@@ -26,7 +26,7 @@ export class StageModel {
         all++;
         if (task.finished === 100) fin++;
       });
-      return all > 0 ? (fin / all) * 100 : 0;
+      return all > 0 ? fin / all : 0;
     };
   }
 }
@@ -51,6 +51,14 @@ export class StageClient {
   async remove(dataItem: StageModel): Promise<void> {
     const { data } = await $host.delete<void>(
       this._api + `remove/${dataItem.id}`
+    );
+    return data;
+  }
+
+  async update(dataItem: StageModel): Promise<StageModel> {
+    const { data } = await $host.put<StageModel>(
+      this._api + `edit/${dataItem.id}`,
+      dataItem
     );
     return data;
   }

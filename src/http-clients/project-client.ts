@@ -68,4 +68,12 @@ export class ProjectClient {
     );
     return data;
   }
+
+  async update(dataItem: ProjectModel): Promise<ProjectModel> {
+    const { data } = await $host.put<ProjectModel>(
+      this._api + `edit/${dataItem.id}`,
+      dataItem
+    );
+    return data;
+  }
 }

@@ -39,15 +39,37 @@
     </gantt>
   </div>
   <create-item-dialog
-    :onSave="forceUpd"
+    :onSave="
+      () => {
+        forceUpd();
+        clearSelection();
+      }
+    "
     :width="800"
     :height="780"
     ref="createDialog"
   />
-  <change-item-dialog :width="800" :height="780" ref="changeDialog" />
+  <change-item-dialog
+    :item="data.selected"
+    :onSave="
+      () => {
+        forceUpd();
+        clearSelection();
+      }
+    "
+    :title="data.selected?.title"
+    :width="800"
+    :height="780"
+    ref="changeDialog"
+  />
   <delete-item-dialog
     :item="data.selected"
-    :onSave="forceUpd"
+    :onSave="
+      () => {
+        forceUpd();
+        clearSelection();
+      }
+    "
     :width="500"
     :height="280"
     ref="deleteDialog"
@@ -82,12 +104,20 @@ export default defineComponent({
       let index = 1;
       value.forEach((project) => {
         index++;
+        let compl = 0;
+        let count = 0;
+        project.stages.forEach((st) => {
+          compl += st.finished();
+          count++;
+        });
         const newProjectItem = {
           id: index + 0,
           supID: "P" + project.id,
           title: project.name,
           orderId: order,
           expanded: true,
+          percentComplete: count > 0 ? compl / count : 0,
+          info: project.info,
           stages: project.stages,
           start: project.dateStart,
           end: project.dateEnd,
@@ -101,6 +131,7 @@ export default defineComponent({
             supID: "S" + stage.id,
             title: stage.name,
             parentId: newProjectItem.id,
+            project: project,
             supParentId: "P" + project.id,
             percentComplete: stage.finished(),
             end: stage.dateEnd ? new Date(stage.dateEnd) : new Date(),
@@ -119,11 +150,15 @@ export default defineComponent({
               orderId: order,
               title: task.name,
               resources: [{ name: task.worker.user.name }],
-              percentComplete: task.finished ? task.finished : 0,
+              percentComplete: task.finished ? 1 : 0,
               start: task.dateStart ? new Date(task.dateStart) : new Date(),
               end: task.dateEnd ? new Date(task.dateEnd) : new Date(),
               parentId: newStageItem.id,
               supParentId: "S" + stage.id,
+              worker: task.worker,
+              stage: stage,
+              info: task.info,
+              project: project,
             };
             order++;
             result.push(newTaskItem);
@@ -209,6 +244,12 @@ export default defineComponent({
       );
       this.hasSelected = false;
       this.data.selection = true;
+      this.data.instance.proxy.$forceUpdate();
+    },
+    clearSelection() {
+      this.data.selected = null;
+      this.hasSelected = true;
+      this.data.selection = false;
       this.data.instance.proxy.$forceUpdate();
     },
   },

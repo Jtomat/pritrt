@@ -242,6 +242,7 @@ export default defineComponent({
     },
     changeProject(e) {
       this.projectLink = e.value;
+      this.changeStage({ value: this.projectLink?.stages[0] });
     },
     changeStage(e) {
       this.stageLink = e.value;

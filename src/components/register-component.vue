@@ -13,7 +13,7 @@
       <label>Email address</label>
     </div>
 
-    <div class="form-floating">
+    <div style="margin-top: 10px" class="form-floating">
       <input
         v-model="data.name"
         type="text"
@@ -24,7 +24,7 @@
       <label>User name</label>
     </div>
 
-    <div class="form-floating mb-3">
+    <div style="margin-top: 10px" class="form-floating mb-3">
       <input
         v-model="data.password"
         type="password"
