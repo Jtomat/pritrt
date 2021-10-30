@@ -2,6 +2,7 @@
   <header class="p-3 bg-dark text-white">
     <div class="container">
       <div
+        style="align-content: start"
         class="
           d-flex
           flex-wrap
@@ -18,15 +19,10 @@
             text-white text-decoration-none
           "
         >
-          <svg
-            class="bi me-2"
-            width="40"
-            height="32"
-            role="img"
-            aria-label="Bootstrap"
-          >
-            <use xlink:href="#bootstrap"></use>
-          </svg>
+          <div style="display: flex; flex-direction: row">
+            <div class="ico"></div>
+            <routerLink to="/" class="te">UnSleepingEye</routerLink>
+          </div>
         </a>
 
         <ul
@@ -40,9 +36,7 @@
           "
         >
           <li>
-            <routerLink
-              to="/"
-              class="nav-link px-2 text-secondary"
+            <routerLink to="/" class="nav-link px-2 text-secondary"
               >Главная</routerLink
             >
           </li>
@@ -156,5 +150,24 @@ export default {
 <style scoped>
 .router-link-active {
   color: #ffc107 !important;
+}
+.ico {
+  margin: 8px;
+  background: url("../../public/Eye.webp");
+  background-size: cover;
+  width: 40px;
+  height: 40px;
+  padding-left: 40px;
+  color: white;
+  font-size: 20pt;
+}
+.te {
+  font-family: Oxanium;
+  margin: 8px;
+  margin-top: 10px;
+  margin-right: 100px;
+  font-size: 25px;
+  text-decoration: none;
+  color: white;
 }
 </style>
