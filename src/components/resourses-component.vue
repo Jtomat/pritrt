@@ -66,7 +66,7 @@
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      height: calc(100% - 85px);
+      max-height: calc(100% - 85px);
       overflow: auto;
     "
   >
